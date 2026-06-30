@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SaMD for Healthcare</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E3A8A;
+  --navy-deep:#172554;
+  --blue:#2563EB;
+  --blue-light:#DBEAFE;
+  --blue-soft:#EFF6FF;
+  --teal:#0D9488;
+  --teal-light:#CCFBF1;
+  --emerald:#10B981;
+  --orange:#EA580C;
+  --orange-light:#FFEDD5;
+  --red:#DC2626;
+  --purple:#7C3AED;
+  --purple-light:#EDE9FE;
+  --ink:#0F172A;
+  --ink-soft:#334155;
+  --muted:#64748B;
+  --line:#E2E8F0;
+  --line-strong:#CBD5E1;
+  --bg:#F8FAFC;
+  --white:#FFFFFF;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:'Inter','Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.page{max-width:1100px;margin:0 auto;padding:40px 36px 56px;background:var(--white)}
+
+/* ---------- HEADER ---------- */
+.header{position:relative;padding-bottom:8px}
+h1.title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:34px;line-height:1.2;color:var(--navy);letter-spacing:-.01em;max-width:780px}
+.subtitle{font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:18px;color:var(--teal);margin-top:6px;letter-spacing:-.005em}
+.clipboard-icon{position:absolute;top:0;right:0;width:72px;height:72px}
+
+/* Info note */
+.notebox{margin-top:20px;display:flex;align-items:flex-start;gap:14px;background:var(--blue-soft);border:1.5px solid var(--blue-light);border-radius:12px;padding:14px 18px}
+.notebox .icircle{flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-style:italic;font-size:16px;font-family:'Plus Jakarta Sans',serif}
+.notebox p{font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.notebox p b{color:var(--navy);font-weight:700}
+
+/* ---------- SECTION HEADER (numbered) ---------- */
+.section{margin-top:22px;border:1.5px solid var(--blue-light);border-radius:14px;padding:18px 22px 22px;background:var(--white)}
+.sechead{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:17px;color:var(--navy);letter-spacing:.01em;display:flex;align-items:center;gap:8px;padding-bottom:14px;margin-bottom:18px;border-bottom:2px solid var(--blue-light)}
+.secnum{color:var(--navy)}
+
+/* ---------- SECTION 1: KPI CARDS ---------- */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.kpi{background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;min-height:170px;justify-content:center}
+.kpi-icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+.kpi-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:34px;color:var(--navy);line-height:1;letter-spacing:-.02em}
+.kpi-num.small{font-size:26px}
+.kpi-lbl{font-size:12.5px;color:var(--ink-soft);line-height:1.45;max-width:200px}
+.kpi-lbl em{color:var(--muted);font-style:italic;font-size:11.5px;display:block;margin-top:2px}
+
+/* ---------- TWO-COLUMN ROW: chart + bars ---------- */
+.two-col{display:grid;grid-template-columns:1.05fr 1fr;gap:14px;margin-top:22px}
+
+/* Chart section */
+.chart-section{padding:18px 22px 18px}
+.chart-svg-wrap{margin-top:4px}
+.chart-svg{width:100%;height:auto;display:block}
+.chart-legend{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--ink-soft);margin-bottom:4px;margin-left:6px}
+.chart-legend .sq{width:12px;height:12px;background:var(--blue);border-radius:2px;display:inline-block}
+.note-callout{margin-top:12px;display:flex;align-items:flex-start;gap:10px;background:#F1F9F4;border:1.5px solid #BDE5C8;border-radius:10px;padding:10px 14px}
+.note-callout .ico{flex:0 0 22px;color:var(--teal);margin-top:1px}
+.note-callout p{font-size:12.5px;line-height:1.5;color:var(--ink-soft);font-style:italic}
+
+/* Specialty bars section */
+.spec-section{padding:18px 22px 18px}
+.spec-list{display:flex;flex-direction:column;gap:13px}
+.spec-row{display:grid;grid-template-columns:30px 130px 1fr 90px;gap:8px;align-items:center}
+.spec-ico{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--teal)}
+.spec-name{font-size:13px;color:var(--ink);font-weight:500;line-height:1.2}
+.spec-track{height:18px;background:transparent;position:relative;display:flex;align-items:center}
+.spec-fill{height:18px;background:var(--blue);border-radius:3px;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11.5px;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;min-width:24px;justify-content:flex-end}
+.spec-pct{font-size:11.5px;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap}
+.spec-axis{display:grid;grid-template-columns:30px 130px 1fr 90px;gap:8px;margin-top:6px;font-size:10.5px;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif}
+.spec-axis .ticks{display:flex;justify-content:space-between;padding-right:6px}
+.spec-axis .axis-lbl{grid-column:3;text-align:center;margin-top:2px;color:var(--ink-soft)}
+
+/* Section 3 insight callout */
+.insight{margin-top:14px;display:flex;align-items:flex-start;gap:10px;background:#FFF8E6;border:1.5px solid #F5D88D;border-radius:10px;padding:10px 14px}
+.insight .ico{flex:0 0 22px;color:#D97706;margin-top:1px}
+.insight p{font-size:12.5px;line-height:1.5;color:var(--ink-soft)}
+.insight p b{color:#92400E}
+
+/* ---------- SECTION 4 ---------- */
+.s4-wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:14px;margin-top:22px}
+.examples-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ex-card{background:var(--white);border:1.5px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.ex-icon-row{display:flex;align-items:flex-start;gap:10px}
+.ex-icon{flex:0 0 44px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.ex-icon.lung{background:var(--blue-soft);color:var(--blue)}
+.ex-icon.heart{background:#FEE2E2;color:var(--red)}
+.ex-icon.brain{background:var(--teal-light);color:var(--teal)}
+.ex-icon.gut{background:var(--purple-light);color:var(--purple)}
+.ex-title{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:13.5px;color:var(--navy);line-height:1.2}
+.ex-company{font-size:11.5px;color:var(--ink-soft);line-height:1.3;margin-top:2px}
+.ex-tag{align-self:flex-start;font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:12px;letter-spacing:.02em;margin-top:auto}
+.ex-tag.rad{background:var(--blue-light);color:var(--navy)}
+.ex-tag.car{background:#FEE2E2;color:var(--red)}
+.ex-tag.neu{background:var(--teal-light);color:var(--teal)}
+.ex-tag.gas{background:var(--purple-light);color:var(--purple)}
+
+/* Top companies */
+.comp-list{display:flex;flex-direction:column;gap:8px}
+.comp-row{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--white)}
+.comp-ico{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--navy)}
+.comp-name{font-size:12.5px;color:var(--ink);font-weight:500;line-height:1.3}
+.comp-num{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:22px;color:var(--navy)}
+
+/* ---------- SECTION 5 ---------- */
+.iec-box{background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);border-radius:14px;padding:18px 20px;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;color:#fff;margin-bottom:14px}
+.iec-shield{width:74px;height:74px;background:rgba(255,255,255,.15);border-radius:14px;display:flex;align-items:center;justify-content:center}
+.iec-text .code{font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:36px;letter-spacing:-.01em;line-height:1}
+.iec-text .desc{font-size:13.5px;margin-top:6px;opacity:.95}
+
+.s5-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.s5-checklist{display:flex;flex-direction:column;gap:8px}
+.s5-check{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink-soft);line-height:1.4}
+.s5-check .tick{flex:0 0 18px;width:18px;height:18px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff}
+.s5-illust{display:flex;align-items:center;justify-content:center;padding:10px}
+.s5-illust svg{width:140px;height:140px;color:var(--blue)}
+
+/* Footer rows */
+.footer-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.foot-card{display:flex;align-items:flex-start;gap:12px;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;background:#FAFCFF}
+.foot-card .ico{flex:0 0 28px;width:28px;height:28px;color:var(--blue);margin-top:2px}
+.foot-card p{font-size:12.5px;line-height:1.55;color:var(--ink-soft)}
+.foot-card p b{color:var(--navy);font-weight:700}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:900px){
+  .page{padding:24px 18px 40px}
+  h1.title{font-size:24px}
+  .subtitle{font-size:15px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .two-col,.s4-wrap,.s5-grid,.footer-row{grid-template-columns:1fr}
+  .examples-grid{grid-template-columns:1fr}
+  .kpi-num{font-size:28px}
+  .spec-row,.spec-axis{grid-template-columns:24px 100px 1fr 70px}
+  .clipboard-icon{width:48px;height:48px}
+  .iec-text .code{font-size:28px}
+}
+@media print{
+  body,html{background:#fff}
+  .page{padding:18px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <div class="header">
+    <h1 class="title">SaMD for Healthcare: An Overview of FDA-Approved AI Systems</h1>
+    <div class="subtitle">Phân tích từ file dữ liệu FDA AI/ML medical devices</div>
+    <!-- Clipboard icon top-right -->
+    <svg class="clipboard-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="10" width="44" height="50" rx="5" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="2"/>
+      <rect x="22" y="6" width="20" height="8" rx="2" fill="#1E3A8A"/>
+      <path d="M28 30 H40 M28 38 H40 M28 46 H36" stroke="#1E3A8A" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="48" cy="48" r="9" fill="#0D9488"/>
+      <path d="M44 48 L47 51 L52 45" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+
+    <div class="notebox">
+      <div class="copyright">© 2026 BinhMinhAI. Ref: Dataset aiml-devices from FDA</div>
+      
+    </div>
+  </div>
+
+  <!-- ============ SECTION 1: KPI ============ -->
+  <div class="section">
+    <div class="sechead"><span class="secnum">1.</span> NHỮNG CON SỐ NỔI BẬT</div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M6 14 C6 11.8 7.8 10 10 10 H20 L24 14 H38 C40.2 14 42 15.8 42 18 V36 C42 38.2 40.2 40 38 40 H10 C7.8 40 6 38.2 6 36 V14 Z" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="1.8"/>
+            <circle cx="32" cy="28" r="6" fill="#0D9488" stroke="#fff" stroke-width="1.5"/>
+            <path d="M30 28 L32 30 L35 26" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="kpi-num">1.524</div>
+        <div class="kpi-lbl">hệ thống / mục thiết bị<br>trong file dữ liệu</div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect x="6" y="10" width="36" height="32" rx="3" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="1.8"/>
+            <rect x="6" y="10" width="36" height="8" fill="#1E3A8A"/>
+            <path d="M14 6 V14 M34 6 V14" stroke="#1E3A8A" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 24 H42 M12 30 H42 M12 36 H42" stroke="#1E3A8A" stroke-width="0.8" opacity="0.5"/>
+            <circle cx="16" cy="27" r="1.5" fill="#0D9488"/>
+            <circle cx="24" cy="27" r="1.5" fill="#0D9488"/>
+            <circle cx="32" cy="33" r="1.5" fill="#0D9488"/>
+          </svg>
+        </div>
+        <div class="kpi-num small">1995 – 30/03/2026</div>
+        <div class="kpi-lbl">khoảng thời gian dữ liệu</div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect x="6" y="8" width="36" height="32" rx="3" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="1.8"/>
+            <path d="M10 32 L18 24 L24 28 L34 16" stroke="#1E3A8A" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M28 16 H34 V22" stroke="#1E3A8A" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="34" cy="16" r="3" fill="#EA580C"/>
+          </svg>
+        </div>
+        <div class="kpi-num">333</div>
+        <div class="kpi-lbl">mục được cấp phép<br>trong năm 2025<em>(cao nhất trong file)</em></div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="16" fill="none" stroke="#DBEAFE" stroke-width="6"/>
+            <path d="M24 8 A16 16 0 1 1 11.5 33.5" fill="none" stroke="#0D9488" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="kpi-num">84,8%</div>
+        <div class="kpi-lbl">được cấp phép<br>từ năm 2020 đến nay</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TWO-COL: TREND + SPECIALTY ============ -->
+  <div class="two-col">
+
+    <!-- ----- Section 2: Trend ----- -->
+    <div class="section chart-section">
+      <div class="sechead"><span class="secnum">2.</span> XU HƯỚNG TĂNG MẠNH TRONG GIAI ĐOẠN GẦN ĐÂY</div>
+      <div class="chart-legend"><span class="sq"></span> Số mục được cấp phép theo năm</div>
+      <div class="chart-svg-wrap">
+        <svg class="chart-svg" viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <!-- Y-axis grid + labels -->
+          <g font-family="Inter,sans-serif" font-size="9" fill="#64748B">
+            <text x="38" y="244" text-anchor="end">0</text>
+            <text x="38" y="216" text-anchor="end">50</text>
+            <text x="38" y="188" text-anchor="end">100</text>
+            <text x="38" y="160" text-anchor="end">150</text>
+            <text x="38" y="132" text-anchor="end">200</text>
+            <text x="38" y="104" text-anchor="end">250</text>
+            <text x="38" y="76" text-anchor="end">300</text>
+            <text x="38" y="48" text-anchor="end">350</text>
+            <text x="38" y="20" text-anchor="end">400</text>
+          </g>
+          <text x="22" y="14" font-family="Inter,sans-serif" font-size="9" fill="#334155">Số mục</text>
+          <!-- Horizontal grid lines -->
+          <g stroke="#E2E8F0" stroke-width="0.6">
+            <line x1="44" y1="240" x2="510" y2="240"/>
+            <line x1="44" y1="212" x2="510" y2="212"/>
+            <line x1="44" y1="184" x2="510" y2="184"/>
+            <line x1="44" y1="156" x2="510" y2="156"/>
+            <line x1="44" y1="128" x2="510" y2="128"/>
+            <line x1="44" y1="100" x2="510" y2="100"/>
+            <line x1="44" y1="72" x2="510" y2="72"/>
+            <line x1="44" y1="44" x2="510" y2="44"/>
+            <line x1="44" y1="16" x2="510" y2="16"/>
+          </g>
+          <!-- Area fill (2016-2025) — y = 240 - count*0.56 -->
+          <!-- Points: 2016:18→229.9 2017:27→224.9 2018:65→203.6 2019:80→195.2 2020:114→176.2 2021:130→167.2 2022:162→149.3 2023:226→113.4 2024:235→108.4 2025:333→53.5 -->
+          <path d="M 70,229.9 L 110,224.9 L 150,203.6 L 190,195.2 L 230,176.2 L 270,167.2 L 310,149.3 L 350,113.4 L 390,108.4 L 430,53.5 L 430,240 L 70,240 Z" fill="url(#area)"/>
+          <!-- Line -->
+          <polyline fill="none" stroke="#2563EB" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="70,229.9 110,224.9 150,203.6 190,195.2 230,176.2 270,167.2 310,149.3 350,113.4 390,108.4 430,53.5"/>
+          <!-- Data points -->
+          <g fill="#2563EB" stroke="#fff" stroke-width="1.5">
+            <circle cx="70" cy="229.9" r="3.5"/>
+            <circle cx="110" cy="224.9" r="3.5"/>
+            <circle cx="150" cy="203.6" r="3.5"/>
+            <circle cx="190" cy="195.2" r="3.5"/>
+            <circle cx="230" cy="176.2" r="3.5"/>
+            <circle cx="270" cy="167.2" r="3.5"/>
+            <circle cx="310" cy="149.3" r="3.5"/>
+            <circle cx="350" cy="113.4" r="3.5"/>
+            <circle cx="390" cy="108.4" r="3.5"/>
+          </g>
+          <!-- Peak 2025 in red -->
+          <circle cx="430" cy="53.5" r="4.5" fill="#DC2626" stroke="#fff" stroke-width="1.5"/>
+          <!-- 2026 partial in orange dashed -->
+          <line x1="430" y1="53.5" x2="470" y2="188" stroke="#EA580C" stroke-width="1.6" stroke-dasharray="4,3"/>
+          <circle cx="470" cy="188" r="4" fill="none" stroke="#EA580C" stroke-width="2"/>
+          <!-- Value labels above each point -->
+          <g font-family="Inter,sans-serif" font-size="10" fill="#1E3A8A" text-anchor="middle" font-weight="600">
+            <text x="70" y="221">18</text>
+            <text x="110" y="216">27</text>
+            <text x="150" y="195">65</text>
+            <text x="190" y="187">80</text>
+            <text x="230" y="168">114</text>
+            <text x="270" y="159">130</text>
+            <text x="310" y="141">162</text>
+            <text x="350" y="105">226</text>
+            <text x="390" y="100">235</text>
+          </g>
+          <text x="430" y="44" font-family="Inter,sans-serif" font-size="13" fill="#DC2626" text-anchor="middle" font-weight="700">333</text>
+          <text x="470" y="208" font-family="Inter,sans-serif" font-size="11" fill="#EA580C" text-anchor="middle" font-weight="700">92</text>
+          <!-- "Cao nhất trong file" callout -->
+          <g>
+            <rect x="394" y="14" width="76" height="22" rx="11" fill="#FEE2E2" stroke="#DC2626" stroke-width="1"/>
+            <text x="432" y="28" font-family="Inter,sans-serif" font-size="10" fill="#DC2626" text-anchor="middle" font-weight="700">Cao nhất</text>
+            <text x="432" y="38" font-family="Inter,sans-serif" font-size="9" fill="#DC2626" text-anchor="middle">trong file</text>
+            <path d="M432 36 L432 47" stroke="#DC2626" stroke-width="1" stroke-dasharray="2,2"/>
+          </g>
+          <!-- "Dữ liệu một phần năm 2026" -->
+          <g>
+            <rect x="446" y="148" width="62" height="30" rx="6" fill="#FFEDD5" stroke="#EA580C" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="477" y="161" font-family="Inter,sans-serif" font-size="8.5" fill="#EA580C" text-anchor="middle">Dữ liệu</text>
+            <text x="477" y="172" font-family="Inter,sans-serif" font-size="8.5" fill="#EA580C" text-anchor="middle">một phần 2026</text>
+          </g>
+          <!-- X axis baseline -->
+          <line x1="44" y1="240" x2="510" y2="240" stroke="#1E3A8A" stroke-width="1.2"/>
+          <!-- X-axis year labels -->
+          <g font-family="Inter,sans-serif" font-size="10" fill="#334155" text-anchor="middle">
+            <text x="70" y="255">2016</text>
+            <text x="110" y="255">2017</text>
+            <text x="150" y="255">2018</text>
+            <text x="190" y="255">2019</text>
+            <text x="230" y="255">2020</text>
+            <text x="270" y="255">2021</text>
+            <text x="310" y="255">2022</text>
+            <text x="350" y="255">2023</text>
+            <text x="390" y="255">2024</text>
+            <text x="430" y="255">2025</text>
+            <text x="470" y="255" fill="#EA580C">2026</text>
+          </g>
+          <text x="470" y="268" font-family="Inter,sans-serif" font-size="8" fill="#EA580C" text-anchor="middle">(đến 30/03/2026)</text>
+          <text x="277" y="276" font-family="Inter,sans-serif" font-size="10" fill="#334155" text-anchor="middle" font-weight="500">Năm</text>
+        </svg>
+      </div>
+      <div class="note-callout">
+        <div class="ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M3 18 L9 12 L13 16 L21 8 M21 8 V14 M21 8 H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p>Hoạt động cấp phép tăng tốc mạnh từ năm 2020, đạt đỉnh trong năm 2025. Năm 2026 là số liệu đến 30/03/2026.</p>
+      </div>
+    </div>
+
+    <!-- ----- Section 3: Specialty ----- -->
+    <div class="section spec-section">
+      <div class="sechead"><span class="secnum">3.</span> PHÂN BỐ THEO CHUYÊN KHOA DẪN ĐẦU</div>
+      <div class="spec-list">
+        <div class="spec-row">
+          <span class="spec-ico">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="4" width="18" height="16" rx="2" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.5"/>
+              <path d="M8 8 Q10 12 8 16 M16 8 Q14 12 16 16 M12 6 V18" stroke="#0D9488" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            </svg>
+          </span>
+          <span class="spec-name">Radiology</span>
+          <div class="spec-track"><div class="spec-fill" style="width:100%">1.164</div></div>
+          <span class="spec-pct">(76,4%)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-ico">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M12 20 C8 17 3 13 3 9 C3 6.5 5 4.5 7.5 4.5 C9 4.5 10.5 5.5 12 7.5 C13.5 5.5 15 4.5 16.5 4.5 C19 4.5 21 6.5 21 9 C21 13 16 17 12 20 Z" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+              <path d="M6 12 H9 L10 9 L12 15 L13.5 11 H18" stroke="#DC2626" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </span>
+          <span class="spec-name">Cardiovascular</span>
+          <div class="spec-track"><div class="spec-fill" style="width:12.6%">147</div></div>
+          <span class="spec-pct">(9,6%)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-ico">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 C7.5 3 4 6.5 4 11 C4 13 4.8 14.8 6 16 V19 C6 19.6 6.4 20 7 20 H10 C10.6 20 11 19.6 11 19 V17 H13 V19 C13 19.6 13.4 20 14 20 H17 C17.6 20 18 19.6 18 19 V16 C19.2 14.8 20 13 20 11 C20 6.5 16.5 3 12 3 Z" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.5"/>
+              <path d="M9 10 Q10 8 12 9 Q14 8 15 10 M9 13 Q10 15 12 14 Q14 15 15 13" stroke="#0D9488" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="spec-name">Neurology</span>
+          <div class="spec-track"><div class="spec-fill" style="width:6%">70</div></div>
+          <span class="spec-pct">(4,6%)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-ico">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <rect x="6" y="4" width="12" height="16" rx="6" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="1.5"/>
+              <line x1="6" y1="12" x2="18" y2="12" stroke="#1E3A8A" stroke-width="1.5"/>
+            </svg>
+          </span>
+          <span class="spec-name">Anesthesiology</span>
+          <div class="spec-track"><div class="spec-fill" style="width:2.2%">26</div></div>
+          <span class="spec-pct">(1,7%)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-ico">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M8 4 C8 4 10 6 10 10 C10 12 8 13 8 15 C8 17 10 18 12 18 C14 18 16 17 16 15 C16 13 14 12 14 10 C14 8 16 6 16 4" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 18 V20" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="spec-name">Gastroenterology-<br>Urology</span>
+          <div class="spec-track"><div class="spec-fill" style="width:2.1%">25</div></div>
+          <span class="spec-pct">(1,6%)</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-ico">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 C12 3 6 11 6 15 C6 18.3 8.7 21 12 21 C15.3 21 18 18.3 18 15 C18 11 12 3 12 3 Z" fill="#DBEAFE" stroke="#2563EB" stroke-width="1.5"/>
+              <ellipse cx="10" cy="15" rx="1.5" ry="2.5" fill="#2563EB" opacity="0.4"/>
+            </svg>
+          </span>
+          <span class="spec-name">Hematology</span>
+          <div class="spec-track"><div class="spec-fill" style="width:1.8%">21</div></div>
+          <span class="spec-pct">(1,4%)</span>
+        </div>
+      </div>
+      <div class="spec-axis">
+        <div></div><div></div>
+        <div class="ticks"><span>0</span><span>300</span><span>600</span><span>900</span><span>1.200</span></div>
+        <div></div>
+      </div>
+      <div class="spec-axis"><div></div><div></div><div class="axis-lbl">Số mục</div><div></div></div>
+
+      <div class="insight">
+        <div class="ico">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3 C8.7 3 6 5.7 6 9 C6 11 7 12.8 8.5 14 V17 H15.5 V14 C17 12.8 18 11 18 9 C18 5.7 15.3 3 12 3 Z" fill="currentColor" opacity="0.2"/>
+            <path d="M9 20 H15 M10 22 H14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M12 3 C8.7 3 6 5.7 6 9 C6 11 7 12.8 8.5 14 V17 H15.5 V14 C17 12.8 18 11 18 9 C18 5.7 15.3 3 12 3 Z" stroke="currentColor" stroke-width="1.6" fill="none"/>
+          </svg>
+        </div>
+        <p><b>Nhận định:</b> AI y tế được FDA cấp phép hiện tập trung áp đảo ở chẩn đoán hình ảnh / radiology.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 4: Examples + Companies ============ -->
+  <div class="s4-wrap">
+    <div class="section">
+      <div class="sechead"><span class="secnum">4.</span> VÍ DỤ HỆ THỐNG TIÊU BIỂU</div>
+      <div class="examples-grid">
+        <div class="ex-card">
+          <div class="ex-icon-row">
+            <div class="ex-icon lung">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M12 4 V14 M12 4 C11 7 8 8 6 10 C4 12 4 16 5 18 C6 19 8 19 9 18 C11 16 12 14 12 14 M12 4 C13 7 16 8 18 10 C20 12 20 16 19 18 C18 19 16 19 15 18 C13 16 12 14 12 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" fill-opacity="0.15"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ex-title">AiORTA - Plan v2.0</div>
+              <div class="ex-company">ViTAA Medical<br>Solutions, Inc.</div>
+            </div>
+          </div>
+          <span class="ex-tag rad">Radiology</span>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-icon-row">
+            <div class="ex-icon heart">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M12 20 C8 17 3 13 3 9 C3 6.5 5 4.5 7.5 4.5 C9 4.5 10.5 5.5 12 7.5 C13.5 5.5 15 4.5 16.5 4.5 C19 4.5 21 6.5 21 9 C21 13 16 17 12 20 Z" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M5 12 H8 L9 9 L11 15 L12.5 11 H19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ex-title">ECG-AI Pulmonary Hypertension (PH) 12-Lead algorithm</div>
+              <div class="ex-company">Anumana, Inc.</div>
+            </div>
+          </div>
+          <span class="ex-tag car">Cardiovascular</span>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-icon-row">
+            <div class="ex-icon brain">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3 C7.5 3 4 6.5 4 11 C4 13 4.8 14.8 6 16 V19 C6 19.6 6.4 20 7 20 H10 V17 H13 V20 H17 C17.6 20 18 19.6 18 19 V16 C19.2 14.8 20 13 20 11 C20 6.5 16.5 3 12 3 Z" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M9 10 Q10 8 12 9 Q14 8 15 10 M9 13 Q10 15 12 14 Q14 15 15 13" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ex-title">Stealth AXiS Cranial clinical application</div>
+              <div class="ex-company">Medtronic<br>Navigation, Inc.</div>
+            </div>
+          </div>
+          <span class="ex-tag neu">Neurology</span>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-icon-row">
+            <div class="ex-icon gut">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6 C8 4 12 5 12 8 C12 11 8 12 10 14 C12 16 16 14 16 17 C16 19 14 20 12 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+                <circle cx="6" cy="6" r="2" fill="currentColor"/>
+                <circle cx="12" cy="20" r="2" fill="currentColor"/>
+              </svg>
+            </div>
+            <div>
+              <div class="ex-title">Deep Capsule</div>
+              <div class="ex-company">Digestaid - Artificial<br>Intelligence<br>Development SA</div>
+            </div>
+          </div>
+          <span class="ex-tag gas">Gastroenterology-<br>Urology</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sechead">DOANH NGHIỆP NỔI BẬT</div>
+      <div class="comp-list">
+        <div class="comp-row">
+          <span class="comp-ico">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="14" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="7" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="7" y="14" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="comp-name">Siemens Medical Solutions USA, Inc.</span>
+          <span class="comp-num">53</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-ico">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="14" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="7" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="7" y="14" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="comp-name">Canon Medical Systems Corporation</span>
+          <span class="comp-num">41</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-ico">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="14" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="7" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="7" y="14" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="comp-name">Aidoc Medical, Ltd.</span>
+          <span class="comp-num">30</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-ico">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="14" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="7" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="7" y="14" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="comp-name">Shanghai United Imaging Healthcare Co., Ltd.</span>
+          <span class="comp-num">26</span>
+        </div>
+        <div class="comp-row">
+          <span class="comp-ico">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <rect x="4" y="6" width="16" height="14" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="7" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="9" width="3" height="3" fill="currentColor"/>
+              <rect x="7" y="14" width="3" height="3" fill="currentColor"/>
+              <rect x="14" y="14" width="3" height="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="comp-name">Philips Ultrasound LLC</span>
+          <span class="comp-num">14</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 5: IEC 62304 ============ -->
+  <div class="section">
+    <div class="sechead"><span class="secnum">5.</span> 1 TIÊU CHUẨN CỐT LÕI CẦN CÓ CHO AI TRONG Y TẾ</div>
+
+    <div class="iec-box">
+      <div class="iec-shield">
+        <svg width="50" height="50" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2 L20 5 V12 C20 17 16 21 12 22 C8 21 4 17 4 12 V5 L12 2 Z" fill="rgba(255,255,255,0.2)" stroke="#fff" stroke-width="1.6"/>
+          <path d="M8.5 12 L11 14.5 L15.5 10" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <div class="iec-text">
+        <div class="code">IEC 62304</div>
+        <div class="desc">Chuẩn quản lý vòng đời phần mềm thiết bị y tế</div>
+      </div>
+    </div>
+
+    <div class="s5-grid">
+      <div class="s5-checklist">
+        <div class="s5-check"><span class="tick"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6 L5 9 L10 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Xác định yêu cầu và kiến trúc phần mềm</div>
+        <div class="s5-check"><span class="tick"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6 L5 9 L10 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Quản lý phát triển, kiểm thử và xác minh/xác nhận</div>
+        <div class="s5-check"><span class="tick"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6 L5 9 L10 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Phân loại mức độ an toàn của phần mềm</div>
+        <div class="s5-check"><span class="tick"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6 L5 9 L10 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Kiểm soát thay đổi, bảo trì và cập nhật</div>
+        <div class="s5-check"><span class="tick"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6 L5 9 L10 3" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span> Tạo hồ sơ kỹ thuật phục vụ đánh giá pháp lý</div>
+      </div>
+
+      <div class="s5-illust">
+        <svg viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="22" width="112" height="80" rx="6" fill="#EFF6FF" stroke="#2563EB" stroke-width="2"/>
+          <rect x="14" y="22" width="112" height="14" rx="6" fill="#2563EB"/>
+          <circle cx="22" cy="29" r="2" fill="#fff"/>
+          <circle cx="30" cy="29" r="2" fill="#fff"/>
+          <circle cx="38" cy="29" r="2" fill="#fff"/>
+          <text x="44" y="62" font-family="JetBrains Mono,monospace" font-size="11" fill="#2563EB" font-weight="700">&lt;/&gt;</text>
+          <text x="44" y="80" font-family="JetBrains Mono,monospace" font-size="11" fill="#2563EB" font-weight="700">&lt;/&gt;</text>
+          <circle cx="100" cy="108" r="14" fill="#0D9488"/>
+          <path d="M93 108 L97 112 L107 102" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="footer-row">
+      <div class="foot-card">
+        <div class="ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2 L14 8 H20 L15 12 L17 18 L12 14 L7 18 L9 12 L4 8 H10 Z" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <p>Với các hệ thống AI/SaMD, <b>IEC 62304</b> là nền tảng quan trọng để biến thuật toán thành sản phẩm y tế có thể kiểm soát, kiểm thử và thẩm định.</p>
+      </div>
+      <div class="foot-card">
+        <div class="ico">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <rect x="5" y="3" width="14" height="18" rx="2" fill="#DBEAFE" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M9 8 H15 M9 12 H15 M9 16 H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <p>Thực tế triển khai thường đi kèm <b>ISO 14971</b> (quản lý rủi ro) và <b>ISO 13485</b> (hệ thống quản lý chất lượng).</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
